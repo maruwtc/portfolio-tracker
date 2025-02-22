@@ -20,10 +20,19 @@ load_dotenv()
 # -----------------------------
 # IB Initialization
 # -----------------------------
+IBGATEWAY_PATH = os.getenv("IBGATEWAY_PATH")
+IBGATEWAY_PORT = os.getenv("IBGATEWAY_PORT")
+IBGATEWAY_CLIENTID = os.getenv("IBGATEWAY_CLIENTID")
+
 ib = IB()
 try:
     # Adjust host, port, and clientId as needed.
-    ib.connect(host='127.0.0.1', port=4001, clientId=1001, readonly=True)
+    ib.connect(
+        host=IBGATEWAY_PATH,
+        port=IBGATEWAY_PORT,
+        clientId=IBGATEWAY_CLIENTID, 
+        readonly=True
+    )
     logging.info("Successfully connected to IB Gateway/TWS!")
 except Exception as e:
     logging.error(f"Error connecting to IB Gateway/TWS: {e}")
@@ -266,10 +275,14 @@ def shutdown_session(exception=None):
 if __name__ == '__main__':
     # Run Flask with HTTPS.
     # Ensure you have 'cert.pem' and 'key.pem' files in your project directory.
+    FLASKPATH = os.getenv("FLASKPATH")
+    FLASKPORT = os.getenv("FLASKPORT")
+    FLASKSSLCERT = os.getenv("FLASKSSLCERT")
+    FLASKSSLKEY = os.getenv("FLASKSSLKEY")
     app.run(
         debug=True,
         use_reloader=False,
-        host="0.0.0.0",
-        port=5000,
-        ssl_context=('config/cert.pem', 'config/key.pem')
+        host=FLASKPATH,
+        port=FLASKPORT,
+        ssl_context=(FLASKSSLCERT, FLASKSSLKEY)
     )
