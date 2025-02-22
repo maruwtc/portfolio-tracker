@@ -3,18 +3,17 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="theme-color" content="#18181b">
     <title>Portfolio Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Custom styles -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Josefin Sans', serif;
         }
 
         .dark [data-theme="dark"] {
@@ -22,7 +21,6 @@
             color: #e4e4e7;
         }
     </style>
-    <!-- Tailwind Config with Dark Mode -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -45,7 +43,6 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen dark:bg-zinc-900 dark:text-zinc-100">
-    <!-- Navigation Bar -->
     <nav class="bg-white shadow-sm border-b border-gray-200 dark:bg-zinc-800 dark:border-zinc-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -60,10 +57,17 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <!-- Currency Toggle Button -->
                     <button id="currency-toggle"
                         class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 focus:outline-none">
-                        <span id="currency-toggle-text">Switch to HKD</span>
+                        <svg id="usd-icon" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm.5-11H9v1H7v1h2v1H7v1h2v1H7v1h2v1h1v-1h2v-1h-2v-1h2v-1h-2v-1h2V8h-2V7z" />
+                        </svg>
+                        <svg id="hkd-icon" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <text x="3" y="15" font-size="12" font-family="sans-serif">HK$</text>
+                        </svg>
                     </button>
                     <button id="theme-toggle"
                         class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 focus:outline-none">
@@ -82,309 +86,223 @@
             </div>
         </div>
     </nav>
-
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 sm:px-0">
-            <!-- Portfolio Summary Cards -->
-            <!-- Adjust grid to display 5 cards on large screens -->
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-                <!-- Total Positions Card -->
-                <!-- <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-primary-100 rounded-md p-3 dark:bg-primary-900">
-                                <svg class="h-6 w-6 text-primary-600 dark:text-primary-400"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
-                                        Total Positions</dt>
-                                    <dd>
-                                        <div class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            {{ total_positions }}
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-                <!-- Total Value Card (Cash + Stocks) -->
+        <div class="grid grid-cols-1 gap-5">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-2">
                 <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-100 rounded-md p-3 dark:bg-green-900">
-                                <svg class="h-6 w-6 text-green-600 dark:text-green-400"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                    <div class="px-4 py-5 sm:p-6 grid">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                                Portfolio Performance
+                            </h3>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+                            <div class="flex items-center py-3">
+                                <div class="flex-shrink-0 bg-green-100 rounded-md p-3 dark:bg-green-900">
+                                    <svg class="h-6 w-6 text-green-600 dark:text-green-400"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
+                                            Net Value</dt>
+                                        <dd>
+                                            <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
+                                                data-usd="{{ net_value }}">
+                                                ${{ net_value | default(0) | round(2) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
                             </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
-                                        Net Value</dt>
-                                    <dd>
-                                        <!-- Overall total: cash balance + stock market value -->
-                                        <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
-                                            data-usd="{{ net_value }}">
-                                            ${{ net_value | default(0) | round(2) }}
-                                        </div>
-                                    </dd>
-                                </dl>
+                            <div class="flex items-center py-3">
+                                <div class="flex-shrink-0 bg-yellow-100 rounded-md p-3 dark:bg-yellow-900">
+                                    <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
+                                            Market Value</dt>
+                                        <dd>
+                                            <!-- Stocks only -->
+                                            <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
+                                                data-usd="{{ market_value }}">
+                                                ${{ market_value | default(0) | round(2) }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="flex items-center py-3">
+                                <div class="flex-shrink-0 bg-blue-100 rounded-md p-3 dark:bg-blue-900">
+                                    <svg class="h-6 w-6 text-blue-600 dark:text-blue-400"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
+                                            Cash Balance</dt>
+                                        <dd>
+                                            <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
+                                                data-usd="{{ cash_balance }}">
+                                                ${{ cash_balance }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="flex items-center py-3">
+                                <div class="flex-shrink-0 bg-red-100 rounded-md p-3 dark:bg-red-900">
+                                    <svg class="h-6 w-6 text-red-600 dark:text-red-400"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
+                                            Daily Change</dt>
+                                        <dd>
+                                            <div class="text-lg font-semibold text-red-600 dark:text-red-400">
+                                                {{ daily_change | default(0) | round(2) }}%
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="flex items-center py-3">
+                                <div class="flex-shrink-0 bg-primary-100 rounded-md p-3 dark:bg-primary-900">
+                                    <svg class="h-6 w-6 text-primary-600 dark:text-primary-400"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                                    </svg>
+                                </div>
+                                <div class="ml-5 w-0 flex-1">
+                                    <dl>
+                                        <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
+                                            Total Positions
+                                        </dt>
+                                        <dd>
+                                            <div class="text-lg font-semibold text-gray-900 dark:text-white">
+                                                {{ portfolio|length }}
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Market Value Card (Stocks Only) -->
-                <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-yellow-100 rounded-md p-3 dark:bg-yellow-900">
-                                <svg class="h-6 w-6 text-yellow-600 dark:text-yellow-400"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
-                                        Market Value</dt>
-                                    <dd>
-                                        <!-- Stocks only -->
-                                        <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
-                                            data-usd="{{ market_value }}">
-                                            ${{ market_value | default(0) | round(2) }}
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Daily Change Card -->
-                <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-red-100 rounded-md p-3 dark:bg-red-900">
-                                <svg class="h-6 w-6 text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
-                                        Daily Change</dt>
-                                    <dd>
-                                        <div class="text-lg font-semibold text-red-600 dark:text-red-400">
-                                            {{ daily_change | default(0) | round(2) }}%
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cash Balance Card -->
-                <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-100 rounded-md p-3 dark:bg-blue-900">
-                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate dark:text-zinc-400">
-                                        Cash Balance</dt>
-                                    <dd>
-                                        <div class="text-lg font-semibold text-gray-900 dark:text-white currency-value"
-                                            data-usd="{{ cash_balance }}">
-                                            ${{ cash_balance }}
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <!-- Portfolio Allocation Chart -->
                 <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
                     <div class="px-4 py-5 sm:p-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                                 Portfolio Allocation
                             </h3>
-                            <!-- Tab Buttons -->
-                            <div class="flex space-x-2">
-                                <button id="tab-positions"
-                                    class="px-3 py-1 border border-gray-300 rounded-md bg-gray-200 dark:bg-gray-700 dark:border-gray-600">
-                                    Positions
-                                </button>
-                                <button id="tab-marketValue"
-                                    class="px-3 py-1 border border-gray-300 rounded-md dark:bg-gray-700 dark:border-gray-600">
-                                    Market Value
-                                </button>
-                            </div>
                         </div>
                         <div class="aspect-w-16 aspect-h-9">
                             <canvas id="portfolioChart" class="h-64"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <!-- Performance Chart -->
-                <div class="bg-white overflow-hidden shadow rounded-lg dark:bg-zinc-800">
-                    <div class="px-4 py-5 sm:p-6">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
-                            Performance History
-                        </h3>
-                        <div class="aspect-w-16 aspect-h-9">
-                            <canvas id="performanceChart" class="h-64"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <!-- Portfolio Data Table -->
             <div class="bg-white shadow rounded-lg overflow-hidden dark:bg-zinc-800">
                 <div class="px-4 py-5 border-b border-gray-200 sm:px-6 dark:border-zinc-700">
                     <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Holdings</h3>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
+                    <!-- Added id "holdings-table" for sorting -->
+                    <table id="holdings-table" class="min-w-full divide-y divide-gray-200 dark:divide-zinc-700">
                         <thead class="bg-gray-50 dark:bg-zinc-700">
                             <tr>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Account</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
                                     Symbol</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Security Type</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Exchange</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Currency</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
                                     Position</th>
-                                <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Avg. Cost</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
                                     Current Price</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
-                                    Market Value</th>
+                                    Avg. Cost</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
                                     P/L</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
+                                    P/L %</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-zinc-300">
+                                    Market Value</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200 dark:bg-zinc-800 dark:divide-zinc-700">
                             {% for pos in portfolio %}
                             <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700">
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ pos.account }}</td>
-                                <td
-                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600 dark:text-primary-400">
+                                <td onclick="window.open('https://finance.yahoo.com/quote/{{ pos.symbol }}')"
+                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-600 dark:text-primary-400 cursor-pointer">
                                     {{ pos.symbol }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-zinc-400">
-                                    {{ pos.secType }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-zinc-400">
-                                    {{ pos.exchange }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-zinc-400">
-                                    {{ pos.currency }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     {{ pos.position }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    {{ pos.avgCost }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     {{ pos.currentPrice }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white currency-value"
-                                    data-usd="{{ (pos.position * pos.currentPrice)|round(2) }}">
-                                    ${{ (pos.position * pos.currentPrice)| default(0) |round(2) }}
-                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                    {{ pos.avgCost }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm {% if pos.position * (pos.currentPrice - pos.avgCost) > 0 %}text-green-600 dark:text-green-400{% else %}text-red-600 dark:text-red-400{% endif %} currency-value"
                                     data-usd="{{ (pos.position * (pos.currentPrice - pos.avgCost))|round(2) }}">
                                     ${{ (pos.position * (pos.currentPrice - pos.avgCost))| default(0) |round(2) }}
+                                </td>
+                                <td
+                                    class="px-6 py-4 whitespace-nowrap text-sm {% if pos.position * (pos.currentPrice - pos.avgCost) > 0 %}text-green-600 dark:text-green-400{% else %}text-red-600 dark:text-red-400{% endif %}">
+                                    {{ ((pos.currentPrice - pos.avgCost) / pos.avgCost * 100)|round(2) }}%
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white currency-value"
+                                    data-usd="{{ (pos.position * pos.currentPrice)|round(2) }}">
+                                    ${{ (pos.position * pos.currentPrice)| default(0) |round(2) }}
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 dark:bg-zinc-700">
-                    <button type="button"
-                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:ring-offset-zinc-800">
-                        Export Data
-                    </button>
-                </div>
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-4 dark:bg-zinc-800 dark:border-zinc-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500 dark:text-zinc-400">&copy; 2025 Portfolio Tracker. All rights
-                reserved.</p>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
     <script>
         const conversionRate = 7.8; // Example: 1 USD = 7.8 HKD
         let currentCurrency = localStorage.getItem('currency') || 'USD'; // default currency
-        const currencyToggleText = document.getElementById('currency-toggle-text');
-
-        // Update currency display on page load
         document.addEventListener('DOMContentLoaded', function () {
             updateCurrencyDisplay();
+            updateCurrencyIcon();
         });
-
-        // Currency toggle button event listener
         document.getElementById('currency-toggle').addEventListener('click', function () {
             currentCurrency = currentCurrency === 'USD' ? 'HKD' : 'USD';
             localStorage.setItem('currency', currentCurrency);
             updateCurrencyDisplay();
-            currencyToggleText.textContent = currentCurrency === 'USD' ? 'Switch to HKD' : 'Switch to USD';
+            updateCurrencyIcon();
         });
-
-        // Function to update all currency values on the page
         function updateCurrencyDisplay() {
             const currencyElements = document.querySelectorAll('.currency-value');
             currencyElements.forEach(el => {
-                // The original USD value is stored in data-usd attribute.
                 const usdValue = parseFloat(el.getAttribute('data-usd'));
                 let displayValue;
                 if (currentCurrency === 'HKD') {
@@ -396,13 +314,20 @@
                 }
             });
         }
-
-        // ---------------- Existing chart code ----------------
+        function updateCurrencyIcon() {
+            const usdIcon = document.getElementById('usd-icon');
+            const hkdIcon = document.getElementById('hkd-icon');
+            if (currentCurrency === 'USD') {
+                usdIcon.classList.remove('hidden');
+                hkdIcon.classList.add('hidden');
+            } else {
+                usdIcon.classList.add('hidden');
+                hkdIcon.classList.remove('hidden');
+            }
+        }
         let portfolioDataGlobal = []; // Global variable to store portfolio data
         let portfolioChart; // Global reference to the Chart instance
-
         document.addEventListener('DOMContentLoaded', function () {
-            // Apply saved theme
             const savedTheme = localStorage.getItem('theme') || 'light';
             if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark');
@@ -420,39 +345,21 @@
             });
             try {
                 portfolioDataGlobal = JSON.parse('{{ portfolio|tojson }}');
-                // Create default chart with "marketValue" mode
                 createPortfolioChart(portfolioDataGlobal, 'marketValue');
                 createPerformanceChart();
                 updateChartsForTheme(document.documentElement.classList.contains('dark'));
             } catch (error) {
                 console.error('Error creating charts:', error);
             }
-
-            // Set default tab to Market Value
-            document.getElementById('tab-marketValue').classList.add('bg-gray-200', 'dark:bg-gray-700');
-            document.getElementById('tab-positions').classList.remove('bg-gray-200', 'dark:bg-gray-700');
-
-            // Tab button event listeners remain unchanged
-            document.getElementById('tab-positions').addEventListener('click', function () {
-                switchPortfolioTab('positions');
-            });
-            document.getElementById('tab-marketValue').addEventListener('click', function () {
-                switchPortfolioTab('marketValue');
-            });
         });
-
-        // Function to recreate the portfolio chart based on mode
         function createPortfolioChart(portfolioData, mode) {
-            // Calculate the aggregated data
             const dataMap = {};
             portfolioData.forEach(pos => {
                 const symbol = pos.symbol;
                 if (!dataMap[symbol]) {
                     dataMap[symbol] = 0;
                 }
-                if (mode === 'positions') {
-                    dataMap[symbol] += Math.abs(pos.position);
-                } else if (mode === 'marketValue') {
+                if (mode === 'marketValue') {
                     dataMap[symbol] += pos.marketValue;
                 }
             });
@@ -462,7 +369,7 @@
 
             const ctx = document.getElementById('portfolioChart').getContext('2d');
             if (portfolioChart) {
-                portfolioChart.destroy();  // Destroy previous instance before creating a new one
+                portfolioChart.destroy();
             }
             portfolioChart = new Chart(ctx, {
                 type: 'doughnut',
@@ -472,8 +379,8 @@
                         data: data,
                         backgroundColor: colors.slice(0, labels.length),
                         borderWidth: 1,
-                        borderColor: document.documentElement.classList.contains('dark') ? '#27272a' : '#ffffff',
-                    }]
+                        borderColor: document.documentElement.classList.contains('dark') ? '#ffffff' : '#27272a',
+                    }],
                 },
                 options: {
                     responsive: true,
@@ -505,10 +412,7 @@
                 }
             });
         }
-
-        // Function to update the chart when switching tabs
         function switchPortfolioTab(mode) {
-            // Update button styles
             if (mode === 'positions') {
                 document.getElementById('tab-positions').classList.add('bg-gray-200', 'dark:bg-gray-700');
                 document.getElementById('tab-marketValue').classList.remove('bg-gray-200', 'dark:bg-gray-700');
@@ -516,10 +420,8 @@
                 document.getElementById('tab-marketValue').classList.add('bg-gray-200', 'dark:bg-gray-700');
                 document.getElementById('tab-positions').classList.remove('bg-gray-200', 'dark:bg-gray-700');
             }
-            // Recreate the chart with the selected mode
             createPortfolioChart(portfolioDataGlobal, mode);
         }
-
         function updateChartsForTheme(isDark) {
             Chart.defaults.color = isDark ? '#e4e4e7' : '#6b7280';
             Chart.defaults.borderColor = isDark ? '#3f3f46' : '#e5e7eb';
@@ -530,102 +432,44 @@
                 window.performanceChart.update();
             }
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = document.getElementById('holdings-table');
+            const headers = table.querySelectorAll('thead th');
 
-        function createPerformanceChart() {
-            // Absolute portfolio data for the past 12 months
-            const portfolioAbsData = [220000, 218000, 225000, 232000, 228000, 236000, 242000, 248000, 245000, 252000, 257000, 250000];
-            // Calculate percentage change relative to the first month for portfolio
-            const portfolioPctData = portfolioAbsData.map((value, index) => {
-                const base = portfolioAbsData[0];
-                return ((value - base) / base) * 100;
-            });
+            headers.forEach((header, colIndex) => {
+                header.style.cursor = 'pointer'; // Indicate clickable header
 
-            // Temporary default labels (will be updated when benchmark data is fetched)
-            const defaultLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            window.performanceChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: defaultLabels,
-                    datasets: [
-                        {
-                            label: 'Portfolio % Change',
-                            data: portfolioPctData,
-                            borderColor: '#3B82F6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.2
-                        },
-                        {
-                            label: 'Benchmark (S&P 500) % Change',
-                            data: [], // Will be updated after fetching benchmark data
-                            borderColor: '#6B7280',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y.toFixed(2) + '%';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { grid: { display: false } },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function (value) {
-                                    return value.toFixed(2) + '%';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+                header.addEventListener('click', () => {
+                    const tbody = table.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    // Toggle sort order (default ascending)
+                    const currentOrder = header.getAttribute('data-sort-order') || 'asc';
+                    const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                    header.setAttribute('data-sort-order', newOrder);
 
-            // Fetch benchmark data from your /api/benchmark route
-            fetch('/api/benchmark')
-                .then(response => response.json())
-                .then(benchmarkData => {
-                    // Extract month labels and closing values from benchmarkData
-                    const benchmarkLabels = benchmarkData.map(item => item.month);
-                    const benchmarkAbsClose = benchmarkData.map(item => item.close);
-                    // Calculate percentage change for benchmark relative to its first value
-                    const benchmarkPctChange = benchmarkAbsClose.map((value, index) => {
-                        const base = benchmarkAbsClose[0];
-                        return ((value - base) / base) * 100;
+                    rows.sort((rowA, rowB) => {
+                        const cellA = rowA.querySelectorAll('td')[colIndex].textContent.trim();
+                        const cellB = rowB.querySelectorAll('td')[colIndex].textContent.trim();
+
+                        // Remove common non-numeric characters (like $ or %)
+                        const numA = parseFloat(cellA.replace(/[^0-9.\-]+/g, ""));
+                        const numB = parseFloat(cellB.replace(/[^0-9.\-]+/g, ""));
+
+                        if (!isNaN(numA) && !isNaN(numB)) {
+                            return newOrder === 'asc' ? numA - numB : numB - numA;
+                        } else {
+                            return newOrder === 'asc'
+                                ? cellA.localeCompare(cellB)
+                                : cellB.localeCompare(cellA);
+                        }
                     });
 
-                    // Update the chart's labels and the benchmark dataset
-                    window.performanceChart.data.labels = benchmarkLabels;
-                    window.performanceChart.data.datasets[1].data = benchmarkPctChange;
-                    window.performanceChart.update();
-                })
-                .catch(error => console.error('Error fetching benchmark data:', error));
-        }
+                    // Reattach sorted rows
+                    rows.forEach(row => tbody.appendChild(row));
+                });
+            });
+        });
     </script>
-
 </body>
 
 </html>
