@@ -2,6 +2,8 @@
 
 A portfolio tracker written with Python
 
+![Screenshot](images/screenshot.png)
+
 ## Functions
 - Connect to IBKR
 - Connect to Firstrade
